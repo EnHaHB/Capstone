@@ -22,7 +22,7 @@ RDEF5 | Hemianopia (Y/N/C=can't assess) <br /> Defective vision or blindness in 
 RDEF6 | Visuospatial disorder (Y/N/C=can't assess) <br /> Pertaining to visual perception of spatial relationships. | object
 RDEF7 | Brainstem/cerebellar signs (Y/N/C=can't assess) <br /> A cerebellar stroke is one of the less common types of strokes. It occurs when a blood vessel is blocked or bleeding, causing complete interruption to a portion of the cerebellum. | object
 RDEF8 | Other deficit (Y/N/C=can't assess) | object
-STYPE | Types of ischaemic strokes (more info in notebook) <br />TACS - Total anterior circulation syndrome  <br />PACS - Partial anterior circulation syndrome <br />POCS - Posterior circulation syndrome <br />LACS - Lacunar syndrome (LACS) <br />OTH - other | object
+STYPE | Types of ischaemic strokes (more info in notebook) <br />TACS - Total anterior circulation syndrome  <br />PACS - Partial anterior circulation syndrome <br />POCS - Posterior circulation syndrome <br />LACS - Lacunar syndrome <br />OTH - other | object
 RDATE	| Year and month of randomisation (mm-YY) | object
 HOURLOCAL	| Local time - hours (99-missing data) of randomisation | int64
 MINLOCAL	| Local time - minutes (99-missing data) of randomisation | int64
@@ -63,7 +63,7 @@ DSIDEX |Comment on above | object
 Column | Description | Dtype
 :--- | :--- | :---
 DDIAGISC | Ischaemic stroke (Y/N/U=unknown) <br /> Ischaemic stroke is the most common kind of a stroke. Due to a blockage or narrowing in the arteries the supply of blood and oxygen to the brain is restricted causing an ischaemic stroke that can result in an infarction (necrotic tissue). See STPYE for different types. | object
-DDIAGHA	| Haemorrhagic stroke (Y/N/U=unknown) <br /> Haemorrhagic stroke is a sudden bleeding into the tissues of the brain, into its ventricles, or into both. object
+DDIAGHA	| Haemorrhagic stroke (Y/N/U=unknown) <br /> Haemorrhagic stroke is a sudden bleeding into the tissues of the brain, into its ventricles, or into both. | object
 DDIAGUN	| Indeterminate stroke (Y/N/U=unknown) | object
 DNOSTRK	| Not a stroke (Y/N/U=unknown) | object
 DNOSTRKX | Comment on above | object
