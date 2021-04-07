@@ -21,8 +21,10 @@ def pred_eval_plot_model(X_train, X_test, y_train, y_test, clf, cv=None):
     y_train_pred = model.predict(X_train)
     y_pred = model.predict(X_test)
     
-    #print(f"--- MODEL PARAMETERS {'-'*10}")
-    #print(json.dumps(model.get_params(), indent=4))
+    print(f"--- MODEL PARAMETERS {'-'*10}")
+    print(json.dump(model.get_params(), indent=4))
+    print(f"--- F1-Score {'-'*10}")
+    print(f1_score(y_test, y_pred, labels=np.unique(y_pred), pos_label= 'Y'))
     print(f"--- CLASSIFICATION REPORT {'-'*10}")
     print(classification_report(y_test,y_pred))
     print(f"--- CONFUSION MATRIX {'-'*10}")
