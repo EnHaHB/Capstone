@@ -133,6 +133,7 @@ dmypy.json
 
 # Data
 /data
+/done
 
 # MLflow
 .mlflow_uri
