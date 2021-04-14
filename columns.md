@@ -50,7 +50,7 @@ DSTER | Steroids (Y/N/U=unknown) | object
 DCAA | Calcium antagonists (Y/N/U=unknown) | object
 DHAEMD | Haemodilution (Y/N/U=unknown)  <br /> Increase in the volume of plasma in relation to red blood cells; reduced concentration of red blood cells in the circulation. | object
 DCAREND | Carotid surgery (Y/N/U=unknown) <br /> Carotid artery stenosis is a narrowing or constriction of any part of the carotid arteries. | object
-DTRHOMB | Thrombolysis (Y/N/U=unknown) <br />  Thrombolysis is the breakdown (lysis) of blood clots formed in blood vessels, using medication. | object
+DTHROMB | Thrombolysis (Y/N/U=unknown) <br />  Thrombolysis is the breakdown (lysis) of blood clots formed in blood vessels, using medication. | object
 DMAJNCH | Major non-cerebral haemorrhage (Y/N/U=unknown) | object
 DMAJNCHD | Date of above (days elapsed from randomisation) | float64
 DMAJNCHX |Comment on above | object
