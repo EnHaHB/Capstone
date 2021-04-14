@@ -135,5 +135,5 @@ dmypy.json
 /data
 /done
 
-# MLflow
-.mlflow_uri
+/.vscode
+
