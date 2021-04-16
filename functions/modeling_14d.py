@@ -1,5 +1,9 @@
-import os, glob
-import json
+import os, glob, json
+from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve, confusion_matrix, classification_report, plot_confusion_matrix
+from sklearn.metrics import f1_score, make_scorer 
+
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV, cross_validate
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler, LabelEncoder, OrdinalEncoder
 
 def pred_eval_plot_model(X_train, X_test, y_train, y_test, clf, cv=None):
     """Train a single model and print evaluation metrics.
@@ -25,14 +29,14 @@ def pred_eval_plot_model(X_train, X_test, y_train, y_test, clf, cv=None):
     y_pred = model.predict(X_test)
     
     print(f"--- MODEL PARAMETERS {'-'*10}")
-    print(json.dump(model.get_params(), indent=4))
+    print(json.dumps(model.get_params(), indent=4))
     print(f"--- F1-Score {'-'*10}")
-    print(f1_score(y_test, y_pred, labels=np.unique(y_pred), pos_label= 'Y'))
+    print(f1_score(y_test, y_pred))
     print(f"--- CLASSIFICATION REPORT {'-'*10}")
     print(classification_report(y_test,y_pred))
     print(f"--- CONFUSION MATRIX {'-'*10}")
     print(confusion_matrix(y_test,y_pred))
-    plot_confusion_matrix(model, X_test, y_test, display_labels=["deceased", "alive"])
+    plot_confusion_matrix(model, X_test, y_test)
     return model
 
 def _pred_eval_plot_grid(X_train, X_test, y_train, y_test, gs):
@@ -55,7 +59,7 @@ def _pred_eval_plot_grid(X_train, X_test, y_train, y_test, gs):
 
     print(f"--- GRID SEARCH RESULTS {'-'*10}")
     print(f"Best model: {gs.best_params_}")
-    print(f"Best cross-validated F1-Score: {gs.f1}")
+    print(f"Best cross-validated Score: {gs.best_score_}")
     print(f"--- CLASSIFICATION REPORT {'-'*10}")
     print(classification_report(y_test,y_pred))
     print(f"--- CONFUSION MATRIX {'-'*10}")
@@ -80,7 +84,7 @@ def run_rand_grid_search(X_train, X_test, y_train, y_test, clf, params_grid, n_i
     Returns:
         model (BaseSearchCV): The trained grid search
     """
-    gs = RandomizedSearchCV(clf, params_grid, n_iter=n_iter, cv=cv, random_state=42, verbose=5, scoring = f1)
+    gs = RandomizedSearchCV(clf, params_grid, n_iter=n_iter, cv=cv, random_state=42, verbose=5)
     return _pred_eval_plot_grid(X_train, X_test, y_train, y_test, gs)
     
 def run_grid_search(X_train, X_test, y_train, y_test, clf, params_grid, cv=5):
@@ -98,6 +102,6 @@ def run_grid_search(X_train, X_test, y_train, y_test, clf, params_grid, cv=5):
     Returns:
         model (BaseSearchCV): The trained grid search
     """
-    gs = GridSearchCV(clf, params_grid, cv=cv, verbose=5, scoring = f1)
+    gs = GridSearchCV(clf, params_grid, cv=cv, verbose=5)
     return _pred_eval_plot_grid(X_train, X_test, y_train, y_test, gs)
     
