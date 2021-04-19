@@ -1,4 +1,4 @@
-## Randomisation Data
+## Randomization Data
 
 Column | Description | Dtype
 :--- | :--- | :---
