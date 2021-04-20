@@ -138,3 +138,32 @@ def ari_scores(pipe, pipe_preprocessor, pipe_clusterer, y_train, X_train_trans):
     plt.xlabel("Principal Components")
     plt.tight_layout()
     plt.show()
+
+def knee_loc():
+
+    """Calculate Adjusted Rand Score, plot ARI for a range(2 to 11) of PC components
+    
+    Args:
+        pipe_preprocessor: Pipe for PCA
+        pipe_clusterer: Pipe for clusterer
+        y_train (pd.Series, np.array): Target of the training set
+        X_train_trans (): pre-transformed X_train (scaled and encoded)
+    
+    Returns:
+        Plot of ARI
+    """
+
+    wcss = []
+    for i in range(1, 11):
+        kmeans = KMeans(n_clusters=i, init='k-means++', max_iter=150, n_init=10, random_state=42)
+        kmeans.fit(X_train_pca)
+        wcss.append(kmeans.inertia_)
+
+    kl = KneeLocator(range(1, 11), wcss, curve="convex", direction="decreasing")
+    print(kl.elbow)
+
+    plt.plot(range(1, 11), wcss)
+    plt.title('Elbow Method')
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Within cluster sum of squares (WCSS)')
+    plt.show()
