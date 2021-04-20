@@ -1,10 +1,15 @@
 import os, glob, json
+import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
+
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve, confusion_matrix, classification_report, plot_confusion_matrix
 from sklearn.metrics import f1_score, make_scorer, adjusted_rand_score
 
 from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV, cross_validate
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler, LabelEncoder, OrdinalEncoder
+
+from kneed import KneeLocator
 
 def pred_eval_plot_model(X_train, X_test, y_train, y_test, clf, cv=None):
     """Train a single model and print evaluation metrics.
@@ -105,11 +110,12 @@ def run_grid_search(X_train, X_test, y_train, y_test, clf, params_grid, cv=5):
     return _pred_eval_plot_grid(X_train, X_test, y_train, y_test, gs)
 
 
-def ari_scores(pipe, pipe_preprocessor, pipe_clusterer, y_train, X_train_trans):
+def ari_scores(pipe, pipe_preprocessor, pipe_clusterer, X_train_trans, y_train):
 
     """Calculate Adjusted Rand Score, plot ARI for a range(2 to 11) of PC components
     
     Args:
+        pipe: Pipe for entire model
         pipe_preprocessor: Pipe for PCA
         pipe_clusterer: Pipe for clusterer
         y_train (pd.Series, np.array): Target of the training set
@@ -139,25 +145,25 @@ def ari_scores(pipe, pipe_preprocessor, pipe_clusterer, y_train, X_train_trans):
     plt.tight_layout()
     plt.show()
 
-def knee_loc():
+def knee_loc(pipe, pipe_clusterer, X_train_trans):
 
-    """Calculate Adjusted Rand Score, plot ARI for a range(2 to 11) of PC components
+    """Locate knee for clusterer and plot WCSS
     
     Args:
-        pipe_preprocessor: Pipe for PCA
+        pipe: Pipe for the entire model
         pipe_clusterer: Pipe for clusterer
-        y_train (pd.Series, np.array): Target of the training set
         X_train_trans (): pre-transformed X_train (scaled and encoded)
     
     Returns:
-        Plot of ARI
+        knee/elbow
+        Plot of WCSS
     """
 
     wcss = []
     for i in range(1, 11):
-        kmeans = KMeans(n_clusters=i, init='k-means++', max_iter=150, n_init=10, random_state=42)
-        kmeans.fit(X_train_pca)
-        wcss.append(kmeans.inertia_)
+        pipe_clusterer.n_clusters = i
+        pipe.fit(X_train_trans)
+        wcss.append(pipe_clusterer.inertia_)
 
     kl = KneeLocator(range(1, 11), wcss, curve="convex", direction="decreasing")
     print(kl.elbow)
@@ -166,4 +172,31 @@ def knee_loc():
     plt.title('Elbow Method')
     plt.xlabel('Number of clusters')
     plt.ylabel('Within cluster sum of squares (WCSS)')
+    plt.show()
+
+def pred_cluster(pipe, pipe_preprocessor, pipe_clusterer, X_train_trans, X_test_trans, y_test):
+    """ Predict clusters of X_train and generate plot of outcome (based on PCA)
+    
+    Args:
+        pipe: Pipe for the entire model
+        pipe_preprocessor: Pipe for PCA
+        pipe_clusterer: Pipe for clusterer
+        y_test: true labels
+        X_train_test (): pre-transformed X_train (scaled and encoded)
+    
+    Returns:
+        Plot of first 2 PCs
+    """
+    pipe_preprocessor.n_components = 2
+    pipe.fit(X_train_trans)
+    y_pred = pipe.predict(X_test_trans)
+    y_test = y_test.to_numpy()
+
+    pcadf = pd.DataFrame(pipe_preprocessor.transform(X_test_trans),columns=["PC 1", "PC 2"])
+    pcadf["predicted_cluster"] = y_pred
+    pcadf["true_label"] = y_test
+
+    scat = sns.scatterplot("PC 1", "PC 2", s=50, data=pcadf, hue="predicted_cluster", style="true_label")
+    scat.set_title("Clustering results of test data")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
     plt.show()
