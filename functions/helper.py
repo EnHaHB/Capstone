@@ -1,10 +1,11 @@
 import os, glob, json
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve, confusion_matrix, classification_report, plot_confusion_matrix
-from sklearn.metrics import f1_score, make_scorer, adjusted_rand_score
+from sklearn.metrics import f1_score, make_scorer, adjusted_rand_score,  silhouette_score
 
 from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV, cross_validate
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler, LabelEncoder, OrdinalEncoder
@@ -200,3 +201,82 @@ def pred_cluster(pipe, pipe_preprocessor, pipe_clusterer, X_train_trans, X_test_
     scat.set_title("Clustering results of test data")
     plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
     plt.show()
+
+def _f_score_i(cl_real_i, cl_pred_i):
+    ''' Calculate f-score for a single posting_id
+        f1-score is the mean of all f-scores
+    Args:
+        cl_real_i (list): list of IDs belonging to the real cluster
+        cl_pred_i (list): list of IDs belonging to the predicted cluster
+
+    Returns:
+    float value of f-score
+    '''
+    s_pred = set(cl_pred_i)
+    s_real = set(cl_real_i)
+    s_intsec = s_pred.intersection(s_real)
+    return 2*len(s_intsec) / (len(s_pred)+len(s_real))
+
+def _recall_i(cl_real_i, cl_pred_i):
+    ''' Calculate recall for a single posting_id
+    Args:
+        cl_real_i (list): list of IDs belonging to the real cluster
+        cl_pred_i (list): list of IDs belonging to the predicted cluster
+    
+    Returns:
+    float value of recall
+    '''
+
+    s_pred = set(cl_pred_i)
+    s_real = set(cl_real_i)
+    s_diff_r_p = s_real.difference(s_pred)
+    return (len(s_real) - len(s_diff_r_p)) / len(s_real)
+
+def _precision_i(cl_real_i, cl_pred_i):
+    ''' Calculate precision for a single posting_id
+    Args:
+        cl_real_i (list): list of IDs belonging to the real cluster
+        cl_pred_i (list): list of IDs belonging to the predicted cluster
+    
+    Returns:
+    float value of precision
+    '''
+    
+    s_pred = set(cl_pred_i)
+    s_real = set(cl_real_i)
+    s_diff_p_r = s_pred.difference(s_real)
+    return (len(s_pred) - len(s_diff_p_r)) / len(s_pred)
+
+
+def get_cluster_metrics(cl_real_i, cl_pred_i):
+    ''' Calculate cluster metrics and return average of each
+    Args:
+        cl_real_i (list): list of IDs belonging to the real cluster
+        cl_pred_i (list): list of IDs belonging to the predicted cluster
+    
+    Returns:
+    Average value of F-Score, Recall, Precision and Adj. Rand Index
+    '''
+
+
+    f_scores = []
+    for i in range(len(cl_real_i)):
+        f_score = _f_score_i(cl_real_i[i], cl_pred_i[i])
+        f_scores.append(f_score)
+
+    recalls = []
+    for i in range(len(cl_real_i)):
+        recall = _recall_i(cl_real_i[i], cl_pred_i[i])
+        recalls.append(recall)
+
+    precisions = []
+    for i in range(len(cl_real_i)):
+        precision = _precision_i(cl_real_i[i], cl_pred_i[i])
+        precisions.append(precision)
+    
+
+    print(f"           Average F_score: {np.mean(f_scores)}")
+    print(f"            Average Recall: {np.mean(recalls)}")
+    print(f"         Average Precision: {np.mean(precisions)}")
+    return np.mean(f_scores), np.mean(recalls), np.mean(precisions)
+    
