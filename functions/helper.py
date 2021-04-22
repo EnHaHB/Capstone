@@ -7,14 +7,14 @@ import seaborn as sns
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve, confusion_matrix, classification_report, plot_confusion_matrix
 from sklearn.metrics import f1_score, make_scorer, adjusted_rand_score,  silhouette_score
 
-from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV, cross_validate
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV, cross_validate, cross_val_predict
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, StandardScaler, LabelEncoder, OrdinalEncoder
 
 from kneed import KneeLocator
 
 def pred_eval_plot_model(X_train, X_test, y_train, y_test, clf, cv=None):
     """Train a single model and print evaluation metrics.
-    
+
     Args:
         X_train (pd.DataFrame, np.array): Features of the training set
         X_test (pd.DataFrame, np.array): Features of thee test set
@@ -26,23 +26,26 @@ def pred_eval_plot_model(X_train, X_test, y_train, y_test, clf, cv=None):
     Returns:
         model (sklearn.base.BaseEstimator): The trained model
     """
-    model = clf.fit(X_train, y_train)
+
 
     if cv:
-        cv = cross_validate(clf, X_train, y_train, cv=5, verbose=5)
-        print(f"Best cross-validated score: {cv['test_score'].mean()}")
+        #model = cross_validate(clf, X_train, y_train, cv=5, verbose=5)
+        #print(f"Best cross-validated score: {model['test_score'].mean()}")
+        y_train_pred = cross_val_predict(clf, X_train, y_train, cv=5)
+        y_pred = cross_val_predict(clf, X_test, y_test, cv=5)
+    else: 
+        model = clf.fit(X_train, y_train)
+        y_train_pred = model.predict(X_train)
+        y_pred = model.predict(X_test)
+        print(f"--- MODEL PARAMETERS {'-'*10}")
+        #print(json.dumps(model.get_params(), indent=4))
+        print(model.get_params())
+        plot_confusion_matrix(model, X_test, y_test)
     
-    y_train_pred = model.predict(X_train)
-    y_pred = model.predict(X_test)
-    
-    print(f"--- MODEL PARAMETERS {'-'*10}")
-    #print(json.dumps(model.get_params(), indent=4))
-    print(model.get_params())
     print(f"--- CLASSIFICATION REPORT {'-'*10}")
     print(classification_report(y_test,y_pred))
     print(f"--- CONFUSION MATRIX {'-'*10}")
     print(confusion_matrix(y_test,y_pred))
-    plot_confusion_matrix(model, X_test, y_test)
     return model
 
 def _pred_eval_plot_grid(X_train, X_test, y_train, y_test, gs):
