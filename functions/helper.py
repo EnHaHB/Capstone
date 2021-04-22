@@ -29,14 +29,15 @@ def pred_eval_plot_model(X_train, X_test, y_train, y_test, clf, cv=None):
     model = clf.fit(X_train, y_train)
 
     if cv:
-        cv = cross_validate(m_rf, X_train_trans, y_train, cv=5, verbose=5)
+        cv = cross_validate(clf, X_train, y_train, cv=5, verbose=5)
         print(f"Best cross-validated score: {cv['test_score'].mean()}")
     
     y_train_pred = model.predict(X_train)
     y_pred = model.predict(X_test)
     
     print(f"--- MODEL PARAMETERS {'-'*10}")
-    print(json.dumps(model.get_params(), indent=4))
+    #print(json.dumps(model.get_params(), indent=4))
+    print(model.get_params())
     print(f"--- CLASSIFICATION REPORT {'-'*10}")
     print(classification_report(y_test,y_pred))
     print(f"--- CONFUSION MATRIX {'-'*10}")
@@ -89,7 +90,7 @@ def run_rand_grid_search(X_train, X_test, y_train, y_test, clf, params_grid, n_i
     Returns:
         model (BaseSearchCV): The trained grid search
     """
-    gs = RandomizedSearchCV(clf, params_grid, n_iter=n_iter, cv=cv, random_state=42, verbose=5)
+    gs = RandomizedSearchCV(clf, params_grid, n_iter=n_iter, cv=cv, random_state=42, verbose=5, scoring = 'precision')
     return _pred_eval_plot_grid(X_train, X_test, y_train, y_test, gs)
     
 def run_grid_search(X_train, X_test, y_train, y_test, clf, params_grid, cv=5):
@@ -275,8 +276,8 @@ def get_cluster_metrics(cl_real_i, cl_pred_i):
         precisions.append(precision)
     
 
-    print(f"           Average F_score: {np.mean(f_scores)}")
-    print(f"            Average Recall: {np.mean(recalls)}")
-    print(f"         Average Precision: {np.mean(precisions)}")
+    print(f"           Average F_score: {round(np.mean(f_scores), 3)}")
+    print(f"            Average Recall: {round(np.mean(recalls), 3)}")
+    print(f"         Average Precision: {round(np.mean(precisions), 3)}")
     return np.mean(f_scores), np.mean(recalls), np.mean(precisions)
     
