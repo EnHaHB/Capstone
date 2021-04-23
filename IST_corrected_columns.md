@@ -19,7 +19,7 @@ RDFE2 | Arm/hand deficit (Y/N/C=can't assess) | object
 RDEF3 | Leg/foot deficit (Y/N/C=can't assess) | object
 RDEF4 | Dysphasia (Y/N/C=can't assess) <br /> Dysphasia is a partial or complete impairment of the ability to communicate resulting from brain injury. | object
 RDEF5 | Hemianopia (Y/N/C=can't assess) <br /> Defective vision or blindness in half of the visual field; usually applied to bilateral defects caused by a single lesion. | object
-RDEF6 | Visuospatial disorder (Y/N/C=can't assess) <br /> Pertaining to visual perception of spatial relationships. | object
+RDEF6 | Visuospatial disorder (Y/N/C=can't assess) <br /> Distortion of the visual perception of spatial relationships. | object
 RDEF7 | Brainstem/cerebellar signs (Y/N/C=can't assess) <br /> A cerebellar stroke is one of the less common types of strokes. It occurs when a blood vessel is blocked or bleeding, causing complete interruption to a portion of the cerebellum. | object
 RDEF8 | Other deficit (Y/N/C=can't assess) | object
 STYPE | Types of ischaemic strokes (more info in notebook) <br />TACS - Total anterior circulation syndrome  <br />PACS - Partial anterior circulation syndrome <br />POCS - Posterior circulation syndrome <br />LACS - Lacunar syndrome <br />OTH - other | object
