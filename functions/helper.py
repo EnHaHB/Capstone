@@ -149,10 +149,7 @@ def ari_scores(pipe, pipe_preprocessor, pipe_clusterer, X_train_trans, y_train):
         pipe_preprocessor.n_components = n
         pipe.fit(X_train_trans)
 
-        ari = adjusted_rand_score(
-        y_train,
-        pipe_clusterer.labels_,
-        )
+        ari = adjusted_rand_score(y_train, pipe_clusterer.labels_,)
         # Add ari to the lists
         ari_scores.append(ari)
 
