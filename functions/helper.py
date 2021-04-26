@@ -55,7 +55,7 @@ def pred_model(clf, X_train, X_test, y_train, y_test):
     print(confusion_matrix(y_test,y_pred))
     plot_confusion_matrix(model, X_test, y_test)
     print('Misclassified samples: %d' % (y_test != y_pred).sum())
-    print (f'ROC-AUC_SCORE : {round(roc_auc_score(y_test, y_pred), 4)}')
+    print (f'F1-Score : {round(f1_score(y_test, y_pred), 4)}')
     return model, y_pred
 
 
