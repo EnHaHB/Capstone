@@ -30,14 +30,23 @@ The prediction of a negative outcome may help medical staff to sort patients int
 + [04_IST_model_shortterm.ipynb](https://github.com/EnHaHB/Stroke-Outcome/blob/main/04_IST_model_shortterm.ipynb): Analyses and training of various machine learning models to predict the short term outcome of stroke patients.
 + [05_IST_model_longterm.ipynb](https://github.com/EnHaHB/Stroke-Outcome/blob/main/05_IST_model_longterm.ipynb): Analyses and training of various machine learning models to predict the long term outcome of stroke patients.
 + [06_IST_results.ipynb](https://github.com/EnHaHB/Stroke-Outcome/blob/main/06_IST_results.ipynb): Summary of the results, including limitations and thoughts on futur work.
++ [IST_corrected_columns](https://github.com/EnHaHB/Stroke-Outcome/blob/main/IST_corrected_columns.ipynb): Information on each original feature in the dataset
++ [IST_presentation](https://github.com/EnHaHB/Stroke-Outcome/blob/main/IST_presentation.pdf): Short presentation of the project
 
+## Outcome and conclusions
+Logistic Regression was the best model to predict the short term outcome of stroke patients (recall = 73%), with a fairly reasonable accuracy (70%). For the prediction of the long term of stroke patients, Random Forest was the best model (recall = 89%, accuracy = 76%). Below we have summarized these two models again.
 
-## Outcome
+Both models were primarily driven by the age of the participants. In both models, dysphasia, hemianopia, visuospatial disorder, systolic blood pressure had an effect, but to different degrees.
 
-
-
-## Conclusions
+Once more detailed data has been added to the models, these may be implemented as a decision support tool for medical teams.
 
 ## Future work
 
-The International Stroke Trial has been continued and also extended in terms of variables. It is worth to look into the dataset. More information can be found [here](https://www.ed.ac.uk/clinical-brain-sciences/research/completed-studies-trials/ist-3-trial).
++ Additional Features:
+    + Smoking,  alcoholism, birth control medicine, obesity, genetic  preposition, ethnicity
+    + Treatment/medication of the patients
++ Application in hospitals:
+    + What is needed?
+    + Ethical considerations!
++ Modeling:
+    + Other techniques (neuronal networks)

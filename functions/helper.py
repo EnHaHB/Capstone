@@ -76,7 +76,7 @@ def rs_model(clf, X_train, y_train, params_grid, scoring = 'recall', repeats = 3
 
     cv = RepeatedStratifiedKFold(n_splits= n_splits, n_repeats= repeats, random_state=42)
     # define search
-    rs = RandomizedSearchCV(clf, params_grid, n_iter=500, scoring=scoring, n_jobs=-1, cv=cv, random_state=42, verbose = 5)
+    rs = RandomizedSearchCV(clf, params_grid, n_iter=10, scoring=scoring, n_jobs=-1, cv=cv, random_state=42, verbose = 5)
     # execute search
     rs_model = rs.fit(X_train, y_train)
     # summarize result
