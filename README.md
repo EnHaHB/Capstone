@@ -34,9 +34,7 @@ The prediction of a negative outcome may help medical staff to sort patients int
 + [IST_presentation](https://github.com/EnHaHB/Stroke-Outcome/blob/main/IST_presentation.pdf): Short presentation of the project
 
 ## Outcome and conclusions
-Logistic Regression was the best model to predict the short term outcome of stroke patients (recall = 73%), with a fairly reasonable accuracy (70%). For the prediction of the long term of stroke patients, Random Forest was the best model (recall = 89%, accuracy = 76%). Below we have summarized these two models again.
-
-Both models were primarily driven by the age of the participants. In both models, dysphasia, hemianopia, visuospatial disorder, systolic blood pressure had an effect, but to different degrees.
+Logistic Regression was the best model to predict the short term outcome of stroke patients (recall = 73%), with a fairly reasonable accuracy (70%). For the prediction of the long term of stroke patients, Random Forest was the best model (recall = 89%, accuracy = 76%).  Both models were primarily driven by the age of the participants. In both models, dysphasia, hemianopia, visuospatial disorder, systolic blood pressure had an effect, but to different degrees.
 
 Once more detailed data has been added to the models, these may be implemented as a decision support tool for medical teams.
 
